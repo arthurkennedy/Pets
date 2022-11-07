@@ -67,12 +67,14 @@ public class Pets {
             System.out.println("What would you like to do?");
             System.out.println("1) View all pets");
             System.out.println("2) Add more pets");
-            System.out.println("3) Exit program");
+            System.out.println("3) Search pets by name");
+            System.out.println("4) Search pets by age");
+            System.out.println("5) Exit program");
             
             System.out.println("Your choice: ");
             int choice = scanner.nextInt();
             
-            while (choice < 0 || choice > 3){
+            while (choice < 0 || choice > 5){
                 choice = scanner.nextInt();
             }
            
@@ -117,6 +119,58 @@ public class Pets {
                     }
                     break;
                 case 3:
+                    System.out.println("Enter a name to search: ");
+                    String name = scanner.nextLine();
+                    System.out.printf("+--------------------+%n");
+                    System.out.printf("| %s | %s      | %s%n", "ID","Name","AGE");
+                    System.out.printf("+--------------------+%n");
+                    int rows = 0;
+                    for (myPet petArray1 : petArray) {
+                        if (petArray1 == (myPet) petArray1) {
+                            myPet pet = petArray1;
+                            if(pet == null){
+                                break;
+                            }else {
+                                if(pet.getName().equals(name)){
+                                    rows++;
+                                    System.out.printf("| %d | %s      |%d%n", pet.getId(),pet.getName(),pet.getAge());
+                                }
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                    System.out.printf("+--------------------+%n");
+                    
+                    System.out.println(rows + " rows in set ");
+                    break;
+                case 4:
+                    System.out.println("Enter age to search: ");
+                    int age = scanner.nextInt();
+                    System.out.printf("+--------------------+%n");
+                    System.out.printf("| %s | %s      | %s%n", "ID","Name","AGE");
+                    System.out.printf("+--------------------+%n");
+                    int row = 0;
+                    for (myPet petArray1 : petArray) {
+                        if (petArray1 == (myPet) petArray1) {
+                            myPet pet = petArray1;
+                            if(pet == null){
+                                break;
+                            }else {
+                                if(pet.getAge() == (int)age){
+                                    row++;
+                                    System.out.printf("| %d | %s      |%d%n", pet.getId(),pet.getName(),pet.getAge());
+                                }
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                    System.out.printf("+--------------------+%n");
+                    
+                    System.out.println(row + " rows in set ");
+                    break;
+                case 5:
                     System.out.println("Goodbye!");
                     isReady = false;
                     break;
