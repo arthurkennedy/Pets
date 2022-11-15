@@ -4,6 +4,7 @@
  */
 
 package com.mycompany.pets;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -70,9 +71,59 @@ public class Pets {
         
         return newArray;
     }
+    
+    public static void writeToFile(String name, myPet[] arr){
+        if(arr != null){
+            try {
+                FileWriter myWriter = new FileWriter(name);
+                BufferedWriter writer = new BufferedWriter(myWriter);
+                for(int i = 0; i < arr.length; i++){
+                    myPet pet = arr[i];
+                    if(pet != null){
+                        writer.write(pet.getId() + " " + pet.getName() + " " + pet.getAge());
+                        writer.newLine();
+                    }
+                }
+                writer.close();
+                System.out.println("Successfully wrote to the file.");
+              } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+              }
+            
+        }
+    }
 
     public static void main(String[] args) {
         myPet[] petArray = new myPet[30];
+        
+        //creates file if not exist
+         File myObj;
+         try {
+            myObj = new File("filename.txt");
+            if (myObj.createNewFile()) {
+              System.out.println("File created: " + myObj.getName());
+            } else {
+              Scanner myReader = new Scanner(myObj);
+              while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                String[] petInfoSplit = data.split(" ",3);
+                int id = Integer.parseInt(petInfoSplit[0]);
+                String name = petInfoSplit[1];
+                int age = Integer.parseInt(petInfoSplit[2]);
+                if(id == (int)id && name.length() > 0 && age == (int)age){
+                    myPet pet = new myPet(id,name,age);
+                    petArray[id] = pet;
+                }
+              }
+            }
+          } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+          }
+        
+        
+        
         
         boolean isReady = true;
         
@@ -283,6 +334,8 @@ public class Pets {
                     break;
                 case 7:
                     System.out.println("Goodbye!");
+                    writeToFile("filename.txt",petArray);
+                    
                     isReady = false;
                     break;
                 default:
