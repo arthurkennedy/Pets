@@ -72,6 +72,22 @@ public class Pets {
         return newArray;
     }
     
+    public static int arrayValueLen(myPet[] arr){
+        if(arr == null){
+            return 0;
+        }
+        int res = 0;
+        for(int i = 0; i < arr.length; i++){
+            if(arr[i] != null){
+                res++;
+            }else {
+                break;
+            }
+        }
+        
+        return res;
+    }
+    
     public static void writeToFile(String name, myPet[] arr){
         if(arr != null){
             try {
@@ -97,6 +113,10 @@ public class Pets {
     public static void main(String[] args) {
         myPet[] petArray = new myPet[30];
         
+        boolean isReady = true;
+        
+        int arrayAddStop = 0;
+        
         //creates file if not exist
          File myObj;
          try {
@@ -114,6 +134,7 @@ public class Pets {
                 if(id == (int)id && name.length() > 0 && age == (int)age){
                     myPet pet = new myPet(id,name,age);
                     petArray[id] = pet;
+                    arrayAddStop = id;
                 }
               }
             }
@@ -121,13 +142,9 @@ public class Pets {
             System.out.println("An error occurred.");
             e.printStackTrace();
           }
-        
-        
-        
-        
-        boolean isReady = true;
-        
-        int arrayAddStop = 0;
+         
+         if(arrayAddStop != 0) arrayAddStop++;
+         
         
         while(isReady){
             Scanner scanner = new Scanner(System.in);  // Create a Scanner object
@@ -180,13 +197,25 @@ public class Pets {
                         if(petInfo.equals((String)"done")){
                             isAdding = false;
                         }else {
-                            String[] petInfoSplit = petInfo.split(" ",2);
-                            String name = petInfoSplit[0];
-                            int age = Integer.parseInt(petInfoSplit[1]);
-                            if(name.length() > 0 && age == (int)age){
-                                myPet pet = new myPet(arrayAddStop,name,age);
-                                petArray[arrayAddStop] = pet;
-                                arrayAddStop++;
+                            if(arrayValueLen(petArray) < 5){
+                                String[] petInfoSplit = petInfo.split(" ",2);
+                                if(petInfoSplit.length == 2){
+                                    String name = petInfoSplit[0];
+                                    int age = Integer.parseInt(petInfoSplit[1]);
+                                    if(age > 1 && age < 20){
+                                        if(name.length() > 0 && age == (int)age){
+                                            myPet pet = new myPet(arrayAddStop,name,age);
+                                            petArray[arrayAddStop] = pet;
+                                            arrayAddStop++;
+                                        }
+                                    }else {
+                                        System.out.println(age + " is not a valid age.");
+                                    }
+                                }else {
+                                    System.out.println("Error: "+ petInfo + " is not a valid input.");
+                                }
+                            }else {
+                                System.out.println("Database is full");
                             }
                         }
                     }
@@ -236,14 +265,22 @@ public class Pets {
                         String petInfo = scanner.nextLine();
                         
                         String[] petInfoSplit = petInfo.split(" ",2);
+                        if(petInfoSplit.length == 2){
                             String name = petInfoSplit[0];
                             int age = Integer.parseInt(petInfoSplit[1]);
-                            if(name.length() > 0 && age == (int)age){
-                                myPet pet = new myPet(savePet.getId(),name,age);
-                                petArray[id] = pet;
-                                
-                                System.out.println(savePet.getName() + " " + savePet.getAge() + " changed to " + name + " " + age);
+                            if(age > 1 && age < 20){
+                                if(name.length() > 0 && age == (int)age){
+                                    myPet pet = new myPet(savePet.getId(),name,age);
+                                    petArray[id] = pet;
+
+                                    System.out.println(savePet.getName() + " " + savePet.getAge() + " changed to " + name + " " + age);
+                                }
+                            }else {
+                                System.out.println(age + " is not a valid age.");
                             }
+                        }else {
+                            System.out.println("Error: "+ petInfo + " is not a valid input.");
+                        }
                     }
                     break;
                 case 4:
