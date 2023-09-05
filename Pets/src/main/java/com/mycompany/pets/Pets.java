@@ -13,7 +13,7 @@ import java.util.*;
  */
 class myPet {
     private int id = 0;
-    private String name = "Hie";
+    private String name = "Hello";
     private int age = 0;
     private Date dateCreated = new Date();
     
